@@ -6,7 +6,7 @@
 
 struct student_t create_student(char *_id, char *_name, char *_year, enum gender_t _gender)
 {
-    struct student_t stud;
+    struct student_t stud; 
     strcpy(stud.year, _year);
     strcpy(stud.name, _name);
     strcpy(stud.id, _id);
