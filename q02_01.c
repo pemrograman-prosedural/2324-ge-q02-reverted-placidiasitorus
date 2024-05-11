@@ -17,7 +17,7 @@ int main(int argc, char **argv)
     char tahun[5];
     char nama_asrama[15];
     unsigned short kapasitas;
-    char *kata;
+    char *kata; 
     int index_siswa, index_asrama;
     int jumlah_siswa = 0, jumlah_asrama = 0;
 

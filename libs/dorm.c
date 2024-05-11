@@ -9,7 +9,7 @@ struct dorm_t create_dorm(char *_name, unsigned short _capacity, enum gender_t _
     strcpy(dorm_.name, _name);
     dorm_.capacity = _capacity;
     dorm_.gender = _gender;
-    dorm_.residents_num = 0; 
+    dorm_.residents_num = 0;  
 
     return dorm_;
 }
