@@ -1,60 +1,103 @@
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
 #include "student.h"
-#include "string.h"
-#include "stdio.h"
-#include "stdlib.h"
+#include "gender.h"
 
+struct student_t create_student(char *_id, char *_name, char *_year, enum gender_t _gender)
+{
+    struct student_t stud;
+    strcpy(stud.year, _year);
+    strcpy(stud.name, _name);
+    strcpy(stud.id, _id);
+    stud.gender = _gender;
+    stud.dorm = malloc(sizeof(struct dorm_t));
+    stud.dorm = NULL;
 
-struct student_t create_student(char *std_id, char *std_name, char *std_year, enum gender_t std_gender){
-    struct student_t std;
-    strcpy(std.id, std_id);
-    strcpy (std.name, std_name);
-    strcpy (std.year, std_year);
-    std.gender = std_gender;
-    std.dorm = NULL;
-    return std;
-    }
+    return stud;
+}
 
+void print_students(struct student_t *_student, int jumlah)
+{
+    char stud_gender[10] = "";
 
-void student_print_detail(struct student_t *_student, unsigned short int _size){
-    for(int i = 0 ; i<_size; i++){
-        char dorm_name[15];
-        if(_student[i].dorm == NULL) strcpy(dorm_name, "unassigned");
-        else strcpy(dorm_name, _student[i].dorm->name);
-
-
-        printf("%s|%s|%s|%s|%s\n", _student[i].id, _student[i].name, _student[i].year, gender_to_text (_student[i].gender), dorm_name);
-
+    for(int x = 1; x < jumlah + 1; ++x)
+    {
+        if(_student[x].gender == 0)
+        {
+            strcpy(stud_gender, "male");
+            printf("%s|%s|%s|%s\n", _student[x].id, _student[x].name, _student[x].year, stud_gender);
+        }
+        else if(_student[x].gender == 1)
+        {
+            strcpy(stud_gender, "female");
+            printf("%s|%s|%s|%s\n", _student[x].id, _student[x].name, _student[x].year, stud_gender);
+        }
     }
 }
 
-void student_print_all(struct student_t *_student, unsigned short int _size){
-    for(int i = 0 ; i < _size; i++){
-    printf("%s|%s|%s|%s\n", _student[i].id, _student[i].name, _student[i].year, gender_to_text (_student[i].gender));
-    
+void print_students_detail(struct student_t *_student, int jumlah)
+{
+    char stud_gender[10] = "";
+
+    for(int x = 1; x < jumlah + 1; ++x)
+    {
+        if (_student[x].dorm == NULL)
+        {
+            if(_student[x].gender == 0)
+            {
+                strcpy(stud_gender, "male");
+                printf("%s|%s|%s|%s|unassigned\n", _student[x].id, _student[x].name, _student[x].year, stud_gender);
+            }
+            else if(_student[x].gender == 1)
+            {
+                strcpy(stud_gender, "female");
+                printf("%s|%s|%s|%s|unassigned\n", _student[x].id, _student[x].name, _student[x].year, stud_gender);
+            }
+        }
+        else
+        {
+            if(_student[x].gender == 0)
+            {
+                strcpy(stud_gender, "male");
+                printf("%s|%s|%s|%s|%s\n", _student[x].id, _student[x].name, _student[x].year, stud_gender, _student[x].dorm->name);
+            }
+            else if(_student[x].gender == 1)
+            {
+                strcpy(stud_gender, "female");
+                printf("%s|%s|%s|%s|%s\n", _student[x].id, _student[x].name, _student[x].year, stud_gender, _student[x].dorm->name);
+            }
+        }
     }
 }
-
 
 void assign_student(struct student_t *_student, struct dorm_t *_dorm, char *id, char *dorm_name)
 {
     if (_dorm->capacity > _dorm->residents_num)
     {
-        if (_dorm->gender == _student->gender)
+        if (_student->gender == _dorm->gender)
         {
             _student->dorm = _dorm;
-            _dorm->residents_num++;
+            ++_dorm->residents_num;
+        }
+    }    
+}   
+
+void move_student(struct student_t *_student, struct dorm_t *_dorm, struct dorm_t *old_dorm, char *id, char *dorm_name)
+{
+    if (_dorm->capacity > _dorm->residents_num)
+    {
+        if (_student->gender == _dorm->gender)
+        {
+            _student->dorm = _dorm;
+            ++_dorm->residents_num;
+            --old_dorm->residents_num;
         }
     }
 }
 
-void move_student(struct student_t *_student, struct dorm_t *_dorm, struct dorm_t *old_dorm, char *id, char *dorm_name)
+void unassign_student(struct student_t *_student, struct dorm_t *_dorm)
 {
-    if (_dorm->residents_num < _dorm->capacity)
-    {
-        if (_dorm->gender == _student->gender)
-        {   _student->dorm = _dorm;
-            old_dorm->residents_num--;
-            _dorm->residents_num++;
-        }
-    }
+    _student->dorm = NULL;
+    --_dorm->residents_num;
 }
