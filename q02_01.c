@@ -29,7 +29,7 @@ int main(int argc, char **argv)
         if (fgets(masukan, sizeof(masukan), stdin) == NULL)
             break;
 
-        masukan[strcspn(masukan, "\n")] = '\0'; // Menghilangkan newline jika ada
+        masukan[strcspn(masukan, "\n")] = '\0'; 
         
         kata = strtok(masukan, "#");
         if (kata == NULL)
@@ -62,7 +62,7 @@ int main(int argc, char **argv)
             else if (strcmp(kata, "perempuan") == 0)
                 jenis_kelamin = GENDER_FEMALE;
             else
-                continue; // Jenis kelamin tidak valid
+                continue; 
             
             students[jumlah_siswa++] = create_student(id, nama_siswa, tahun, jenis_kelamin);
         }
@@ -86,11 +86,18 @@ int main(int argc, char **argv)
                 }
             }
         }
-        // Tambahkan logika untuk perintah-perintah lainnya
+       
         
     } while (strcmp(masukan, "---") != 0);
+
+    
+    printf("\nStudent Details:\n");
+    print_students_detail(students, jumlah_siswa);
+    printf("\nDorm Details:\n");
+    print_dorms_detail(dorms, jumlah_asrama);
 
     free(students);
     free(dorms);
     return 0;
 }
+
